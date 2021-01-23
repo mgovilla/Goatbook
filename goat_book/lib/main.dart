@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:goat_book/auth.dart';
 import './views/account.dart';
 import './views/groups.dart';
 import './views/queue.dart';
 import './views/messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+AuthService _authService;
 
 class MyApp extends StatelessWidget {
   // This is the color theme for the whole app
-  final ThemeData theme = ThemeData(
-    primarySwatch: Colors.blue
-  );
+  final ThemeData theme = ThemeData(primarySwatch: Colors.blue);
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +37,10 @@ class NavigationWrapper extends StatefulWidget {
 
 class _NavigationWrapperState extends State<NavigationWrapper> {
   int _selectedIndex = 0;
-  static const TextStyle optionsStyle = 
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _bottomNavOptions = <Widget>[ // Add each page here!!!!
+  static const TextStyle optionsStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _bottomNavOptions = <Widget>[
+    // Add each page here!!!!
     MessagingView(),
     GroupsView(),
     QueueView(),
@@ -55,9 +62,7 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      body: Center(
-        child: _bottomNavOptions.elementAt(_selectedIndex)
-      ),
+      body: Center(child: _bottomNavOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -72,10 +77,7 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
             icon: Icon(Icons.run_circle),
             label: 'Queue',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account'
-          )
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
         currentIndex: _selectedIndex,
         unselectedItemColor: Colors.grey,
