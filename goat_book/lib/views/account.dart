@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:goat_book/auth.dart';
+
+AuthService _authService;
 
 class AccountView extends StatefulWidget {
   const AccountView();
@@ -8,13 +12,23 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  @override
+  void initState() {
+    super.initState();
+    _authService = new AuthService();
+  }
 
   @override
   Widget build(BuildContext ctx) {
-    return(
-      Text(
-        "Account Page"
-      )
-    );
+    return Container(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+          Text("Account Page"),
+          RaisedButton(
+              onPressed: () => _authService.googleSignIn(),
+              child: Text("Sign in with Google"))
+        ]));
   }
 }
