@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:goat_book/auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import './views/account.dart';
 import './views/groups.dart';
 import './views/queue.dart';
 import './views/messaging.dart';
-import 'package:firebase_core/firebase_core.dart';
+import './views/loading.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
-}
-
-AuthService _authService;
+} 
 
 class MyApp extends StatelessWidget {
   // This is the color theme for the whole app
@@ -20,10 +19,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Goatbook',
-      theme: theme,
-      home: NavigationWrapper(),
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.error.toString());
+          return Container();
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            title: 'Goatbook',
+            theme: theme,
+            home: NavigationWrapper(),
+          );
+        }
+r
+        return Container();
+      }
     );
   }
 }
