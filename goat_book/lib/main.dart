@@ -7,23 +7,16 @@ import './views/messaging.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  // This is the color theme for the whole app
+  final ThemeData theme = ThemeData(
+    primarySwatch: Colors.blue
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Goatbook',
+      theme: theme,
       home: NavigationWrapper(),
     );
   }
@@ -54,7 +47,7 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -86,7 +79,7 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
         ],
         currentIndex: _selectedIndex,
         unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Theme.of(ctx).colorScheme.primary,
         onTap: _onItemTapped,
       ),
     );
