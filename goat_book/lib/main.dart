@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import './views/account.dart';
+import './views/groups.dart';
+import './views/queue.dart';
+import './views/messaging.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,22 +41,10 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
   static const TextStyle optionsStyle = 
     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _bottomNavOptions = <Widget>[ // Add each page here!!!!
-    Text(
-      'Tab 1',
-      style: optionsStyle,
-    ),
-    Text(
-      'Tab 2',
-      style: optionsStyle,
-    ),
-    Text(
-      'Tab 3',
-      style: optionsStyle,
-    ),
-    Text(
-      'Tab 4',
-      style: optionsStyle,
-    )
+    MessagingView(),
+    GroupsView(),
+    QueueView(),
+    AccountView()
   ];
 
   void _onItemTapped(int index) {
