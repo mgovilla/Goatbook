@@ -21,6 +21,9 @@ class LoginButton extends StatefulWidget {
   _LoginButtonState createState() => _LoginButtonState();
 }
 
+
+
+
 class _LoginButtonState extends State<LoginButton> {
   final _formKey = GlobalKey<FormState>();
   final uid = TextEditingController();
@@ -34,7 +37,9 @@ class _LoginButtonState extends State<LoginButton> {
             child: Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 100.0),
                 child: Flex(direction: Axis.vertical, children: <Widget>[
-                  Text("Login"),
+                  Text("Login",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 32.0)),
                   TextFormField(
                     controller: uid,
                     decoration: const InputDecoration(hintText: 'Email'),
@@ -48,6 +53,9 @@ class _LoginButtonState extends State<LoginButton> {
                   TextFormField(
                     controller: pass,
                     decoration: const InputDecoration(hintText: 'Password'),
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    obscureText: true,
                     validator: (value) {
                       if (value.isEmpty) {
                         return 'Please Enter your password.';
@@ -55,14 +63,37 @@ class _LoginButtonState extends State<LoginButton> {
                       return null;
                     },
                   ),
-                  IconButton(
-                      icon: Icon(Icons.login_rounded),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          FirebaseAuth.instance.signInWithEmailAndPassword(
-                              email: uid.text, password: pass.text);
-                        }
-                      })
+                  Column(children: <Widget>[
+                    MaterialButton(
+                        child: Text("Sign In",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        color: Colors.red[800],
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            FirebaseAuth.instance.signInWithEmailAndPassword(
+                                email: uid.text, password: pass.text);
+                          }
+                        }),
+                        MaterialButton(
+                        child: Text("Sign Up",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16.0)
+                        ),
+                        color: Colors.white,
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            try{
+                              FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                email: uid.text, password: pass.text);
+                            }
+                            on FirebaseAuthException catch (e) {
+                              print(e.code);
+                            }
+                          }
+                        }),
+                    
+                  ])
                 ]))));
   }
 }

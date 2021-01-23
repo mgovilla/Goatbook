@@ -3,37 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 
-/*class MyApp extends StatelessWidget{
-  @override 
-  Widget build(BuildContext context){
-    Widget usernameSection = Container( //Display user's profile pic and name
-      child: Row(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(20),
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: NetworkImage(),//User's profile pic
-                  fit: BoxFit.fill
-                  ),
-                  ),
-                  ),
-                  Text("Username",
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                  ),
-          ],          
-    ),
-      ),
-    );
-  }
-}
-
+/*
 class SearchBar extends StatelessWidget {
   @override 
   Widget build(BuildContext context) {
@@ -50,11 +20,6 @@ class SearchBar extends StatelessWidget {
       drawer: Drawer(),
       );
   }
-}
-
-class DataSearch extends StatefulWidget {
-  @override
-  
 }
 
 class DataSearch extends StatelessComponenet{
@@ -142,7 +107,27 @@ class _MessagingViewState extends State<MessagingView> {
 class UsernameSection extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    return (Text("Username Section"));
+    return Column (
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.all(20),
+          width: 200,
+          height: 200,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: NetworkImage('https://googleflutter.com/sample_image.jpg'),//User's profile pic
+              fit: BoxFit.fill
+              ),
+              ),
+              ),
+              Text("Username",
+              style: TextStyle(
+                color: Colors.grey[500],
+                ),
+                ),
+      ],
+    );
   }
 }
 
