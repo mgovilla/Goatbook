@@ -1,10 +1,6 @@
-import 'dart:html';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-import 'package: test_searchbar/DataList.dart';
 
-/**Widget Build in MessageView Class still need to be worked on and put together
+/*/**Widget Build in MessageView Class still need to be worked on and put together
  * I put some comments there if any of you would like to finish it. Thank you!
  */
 void main() {
@@ -149,4 +145,19 @@ class _MessagingViewState extends State<MessagingView> {
     );
   }
 
+}
+*/
+
+class MessagingView extends StatefulWidget {
+  const MessagingView();
+
+  @override
+  _MessagingViewState createState() => _MessagingViewState();
+}
+
+class _MessagingViewState extends State<MessagingView> {
+  @override
+  Widget build(BuildContext ctx) {
+    return Text("Messaging");
+  }
 }

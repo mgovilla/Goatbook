@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             // After firebase init is done.
+            _authService = AuthService();
+
             FirebaseAuth.instance.authStateChanges().listen((User user) {
               if (user = null) {
                 return AuthManager();

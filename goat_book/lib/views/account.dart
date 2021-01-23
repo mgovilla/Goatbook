@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:goat_book/auth.dart';
+import 'package:goat_book/core/auth.dart';
 
 AuthService _authService;
 
