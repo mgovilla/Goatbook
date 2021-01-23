@@ -37,9 +37,9 @@ class _LoginButtonState extends State<LoginButton> {
             child: Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 100.0, 16.0, 100.0),
                 child: Flex(direction: Axis.vertical, children: <Widget>[
-                  Text("Login",
+                  Text("GoatBook",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 32.0)),
+                          fontWeight: FontWeight.bold, fontStyle: FontStyle.italic, fontSize: 32.0)),
                   TextFormField(
                     controller: uid,
                     decoration: const InputDecoration(hintText: 'Email'),
@@ -69,6 +69,7 @@ class _LoginButtonState extends State<LoginButton> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16.0)),
                         color: Colors.red[800],
+                        textColor: Colors.white,
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -81,6 +82,7 @@ class _LoginButtonState extends State<LoginButton> {
                                   fontWeight: FontWeight.bold, fontSize: 16.0)
                         ),
                         color: Colors.white,
+                        textColor: Colors.red[800],
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             try{
