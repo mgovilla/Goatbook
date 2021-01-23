@@ -8,13 +8,8 @@ class LoadingView extends StatefulWidget {
 }
 
 class _LoadingViewState extends State<LoadingView> {
-
   @override
   Widget build(BuildContext ctx) {
-    return(
-      Text(
-        "Loading..."
-      )
-    );
+    return (Text("Loading..."));
   }
 }

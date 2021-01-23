@@ -1,43 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:goat_book/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import './views/account.dart';
 import './views/groups.dart';
 import './views/queue.dart';
 import './views/messaging.dart';
+import './views/login.dart';
 import './views/loading.dart';
+
+import 'core/auth.dart';
+
+BaseAuth _authService;
+
+// This is the color theme for the whole app
+ThemeData theme = ThemeData(primarySwatch: Colors.blue);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatelessWidget {
-  // This is the color theme for the whole app
-  final ThemeData theme = ThemeData(primarySwatch: Colors.blue);
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print(snapshot.error.toString());
-          return Container();
-        }
+        // Initalize Firebase
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error.toString());
+            return Container();
+          }
 
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            title: 'Goatbook',
-            theme: theme,
-            home: NavigationWrapper(),
-          );
-        }
-r
-        return Container();
-      }
-    );
+          if (snapshot.connectionState == ConnectionState.done) {
+            // After firebase init is done.
+            FirebaseAuth.instance.authStateChanges().listen((User user) {
+              if (user = null) {
+                return AuthManager();
+              }
+            });
+
+            return AuthManager();
+          }
+
+          return LoadingView();
+        });
+  }
+}
+
+class AuthManager extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    if (_authService.getCurrentUser() != null) {
+      return MaterialApp(
+        title: 'Goatbook',
+        theme: theme,
+        home: NavigationWrapper(),
+      );
+    } else {
+      return MaterialApp(
+        title: 'Goatbook',
+        theme: theme,
+        home: LoginView(),
+      );
+    }
   }
 }
 
