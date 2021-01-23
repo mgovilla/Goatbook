@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:goat_book/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class BaseAuth {
   Future<User> signIn(String email, String password);
@@ -20,7 +20,7 @@ abstract class BaseAuth {
 }
 
 class AuthService implements BaseAuth {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthService() {}
 
@@ -32,13 +32,13 @@ class AuthService implements BaseAuth {
   }
 
   Future<User> googleSignIn() async {
-    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    /*GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     if (googleUser == null) {
       print("Google user is Null!");
       return null;
     }
     GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
+    
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken));
@@ -46,6 +46,7 @@ class AuthService implements BaseAuth {
     print("Signed in: " + userCredential.user.displayName);
 
     return userCredential.user;
+    */
   }
 
   Future<User> signUp(String email, String password) async {
