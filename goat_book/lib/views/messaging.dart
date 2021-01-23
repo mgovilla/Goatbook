@@ -1,15 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 
-/*/**Widget Build in MessageView Class still need to be worked on and put together
- * I put some comments there if any of you would like to finish it. Thank you!
- */
-void main() {
-  runApp(MaterialApp(
-    home: MyApp(),
-  ));
-}
-
-class MyApp extends StatelessWidget{
+/*class MyApp extends StatelessWidget{
   @override 
   Widget build(BuildContext context){
     Widget usernameSection = Container( //Display user's profile pic and name
@@ -58,7 +52,12 @@ class SearchBar extends StatelessWidget {
   }
 }
 
-class DataSearch extends SearchDelegate<String>{
+class DataSearch extends StatefulWidget {
+  @override
+  
+}
+
+class DataSearch extends StatelessComponenet{
   final List<ListWords> listWords;
 
   DataSearch(this.listWords);
@@ -118,7 +117,7 @@ class DataSearch extends SearchDelegate<String>{
       itemCount: suggestionList.length,
     );
   }
-}
+}*/
 
 class MessagingView extends StatefulWidget {
   const MessagingView();
@@ -128,36 +127,35 @@ class MessagingView extends StatefulWidget {
 }
 
 class _MessagingViewState extends State<MessagingView> {
-
   @override
   Widget build(BuildContext ctx) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text ("Message"),
-        ),
-        body: ListView(
-          children: [
-            usernameSection, // need to put all this together
-            searchSection, // need to put all this together
-            messageSection, // still needs to work on this
-          ],
-        ),
+    return ListView(
+      children: [
+        UsernameSection(), // need to put all this together
+        SearchSection(), // need to put all this together
+        MessageSection(), // still needs to work on this
+      ],
     );
   }
-
-}
-*/
-
-class MessagingView extends StatefulWidget {
-  const MessagingView();
-
-  @override
-  _MessagingViewState createState() => _MessagingViewState();
 }
 
-class _MessagingViewState extends State<MessagingView> {
+class UsernameSection extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    return Text("Messaging");
+    return (Text("Username Section"));
+  }
+}
+
+class SearchSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    return (Text("Search Section"));
+  }
+}
+
+class MessageSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    return (Text("Message Section"));
   }
 }
