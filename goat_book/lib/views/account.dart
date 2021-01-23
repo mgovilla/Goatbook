@@ -24,11 +24,16 @@ class _AccountViewState extends State<AccountView> {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-          Text("Account Page"),
-          RaisedButton(
-              onPressed: () => _authService.googleSignIn(),
-              child: Text("Sign in with Google"))
-        ]));
+            children: <Widget>[Text("Account Page"), SignoutButton()]));
+  }
+}
+
+class SignoutButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctx) {
+    return MaterialButton(
+      onPressed: () => _authService.signOut(),
+      child: Text("Sign Out"),
+    );
   }
 }

@@ -37,12 +37,6 @@ class MyApp extends StatelessWidget {
             // After firebase init is done.
             _authService = AuthService();
 
-            FirebaseAuth.instance.authStateChanges().listen((User user) {
-              if (user = null) {
-                return AuthManager();
-              }
-            });
-
             return AuthManager();
           }
 
@@ -54,19 +48,23 @@ class MyApp extends StatelessWidget {
 class AuthManager extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    if (_authService.getCurrentUser() != null) {
-      return MaterialApp(
-        title: 'Goatbook',
-        theme: theme,
-        home: NavigationWrapper(),
-      );
-    } else {
-      return MaterialApp(
-        title: 'Goatbook',
-        theme: theme,
-        home: LoginView(),
-      );
-    }
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (_authService.getCurrentUser() != null) {
+            return MaterialApp(
+              title: 'Goatbook',
+              theme: theme,
+              home: NavigationWrapper(),
+            );
+          } else {
+            return MaterialApp(
+              title: 'Goatbook',
+              theme: theme,
+              home: LoginView(),
+            );
+          }
+        });
   }
 }
 
