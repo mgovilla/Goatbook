@@ -100,22 +100,20 @@ class _MessagingViewState extends State<MessagingView> {
           backgroundColor: Colors.red[800],
           title: const Text('The Goat Hub'),
         ),
-      body: Column(children: <Widget>[
-        UsernameSection(), // need to put all this together
-        SearchSection(), // need to put all this together
-        MessageSection(), // still needs to work on this
-      ],
-    ));
+        body: Column(
+          children: <Widget>[
+            UsernameSection(), // need to put all this together
+            //SearchSection(), // need to put all this together
+            MessageSection(), // still needs to work on this
+          ],
+        ));
   }
 }
-
-
-
 
 class UsernameSection extends StatelessWidget {
   @override
   Widget build(BuildContext ctx) {
-    return Column (
+    return Column(
       children: <Widget>[
         Container(
           margin: EdgeInsets.all(20),
@@ -124,16 +122,17 @@ class UsernameSection extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: NetworkImage('https://googleflutter.com/sample_image.jpg'),//User's profile pic
-              fit: BoxFit.fill
-              ),
-              ),
-              ),
-              Text("Username",
-              style: TextStyle(
-                color: Colors.grey[500],
-                ),
-                ),
+                image: NetworkImage(
+                    'https://googleflutter.com/sample_image.jpg'), //User's profile pic
+                fit: BoxFit.fill),
+          ),
+        ),
+        Text(
+          "Username",
+          style: TextStyle(
+            color: Colors.grey[500],
+          ),
+        ),
       ],
     );
   }
