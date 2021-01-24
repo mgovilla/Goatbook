@@ -98,7 +98,7 @@ class GroupQueueTile extends StatelessWidget {
                 }).then((result) {});
               },
               child:
-                  Text("Leave Queue", style: TextStyle(color: Colors.white)),
+                  Text("Leave Queue", style: TextStyle(color: Colors.red[800])),
             );
           } else {
             queueBtn = MaterialButton(
@@ -109,7 +109,7 @@ class GroupQueueTile extends StatelessWidget {
                 }).then((result) {});
               },
               child:
-                  Text("Join Queue", style: TextStyle(color: Colors.white)),
+                  Text("Join Queue", style: TextStyle(color: Colors.red[800])),
             );
           }
 
@@ -118,7 +118,7 @@ class GroupQueueTile extends StatelessWidget {
 
           return ExpansionTile(
             
-            title: Text(roomname, style: TextStyle(color: Colors.red[800])),
+            title: Text(roomname),
             children: [
               Container(
                 color: Colors.red[800],
