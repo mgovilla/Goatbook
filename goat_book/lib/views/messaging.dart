@@ -95,15 +95,22 @@ class MessagingView extends StatefulWidget {
 class _MessagingViewState extends State<MessagingView> {
   @override
   Widget build(BuildContext ctx) {
-    return ListView(
-      children: [
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red[800],
+          title: const Text('The Goat Hub'),
+        ),
+      body: Column(children: <Widget>[
         UsernameSection(), // need to put all this together
         SearchSection(), // need to put all this together
         MessageSection(), // still needs to work on this
       ],
-    );
+    ));
   }
 }
+
+
+
 
 class UsernameSection extends StatelessWidget {
   @override

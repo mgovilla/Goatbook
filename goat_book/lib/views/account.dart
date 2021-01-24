@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goat_book/core/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 AuthService _authService;
 
@@ -20,46 +21,50 @@ class _AccountViewState extends State<AccountView> {
 
   @override
   Widget build(BuildContext ctx) {
-
-    
-    
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red[800],
           title: const Text('Account Information'),
         ),
-        body: Column(
-          children: <Widget> [
-            Card(
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Flex(direction: Axis.horizontal, children: <Widget>[
-                      Text("Email: " + _authService.getCurrentUser().email),
-                      Spacer(),
-                      MaterialButton(
-                  
-                        child: Text(
-                          "Change Username",
-                          style: TextStyle(color: Colors.red[800])),
-                        
-                      )
-                    ]))),
+        body: Column(children: <Widget>[
           Card(
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Flex(direction: Axis.horizontal, children: <Widget>[
-                      Text("Username: USERNAME HERE"),
-                      Spacer(),
-                      MaterialButton(
-                      
-                        child: Text(
-                          "Change Username",
+              child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Flex(direction: Axis.horizontal, children: <Widget>[
+                    Text("Email: " + _authService.getCurrentUser().email),
+                    Spacer(),
+                    MaterialButton(
+                      // onPressed: ,
+                      child: Text("Change Email",
                           style: TextStyle(color: Colors.red[800])),
-                      )
-                    ]))),
+                    )
+                  ]))),
+          Card(
+              child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Flex(direction: Axis.horizontal, children: <Widget>[
+                    Text("Username: "),
+                    Spacer(),
+                    MaterialButton(
+                      // onPressed: ,
+                      child: Text("Change Username",
+                          style: TextStyle(color: Colors.red[800])),
+                    )
+                  ]))),
+          Card(
+              child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Flex(direction: Axis.horizontal, children: <Widget>[
+                    Text("Password: *********"),
+                    Spacer(),
+                    MaterialButton(
+                      // onPressed: ,
+                      child: Text("Change Password",
+                          style: TextStyle(color: Colors.red[800])),
+                    )
+                  ]))),
           SignoutButton()
-          ]
-      ));
+        ]));
   }
 }
 

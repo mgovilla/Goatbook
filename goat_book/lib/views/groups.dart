@@ -42,11 +42,12 @@ class GroupsList extends StatelessWidget {
       stream: users.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return Text('Something went wrong',
+              style: TextStyle(color: Colors.red[800]));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Text("Loading", style: TextStyle(color: Colors.red[800]));
         }
 
         return new ListView(
@@ -59,7 +60,8 @@ class GroupsList extends StatelessWidget {
                       Spacer(),
                       MaterialButton(
                         onPressed: () => _subscribeHandler(document.id),
-                        child: Text("Subscribe"),
+                        child: Text("Subscribe",
+                            style: TextStyle(color: Colors.red[800])),
                         textColor: Theme.of(ctx).primaryColor,
                       )
                     ])));
