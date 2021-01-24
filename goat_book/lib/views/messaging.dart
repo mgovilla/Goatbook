@@ -67,16 +67,19 @@ class _MessagingViewState extends State<MessagingView> {
           // Edit text
           Flexible(
             child: Container(
-              child: TextField(
-                onSubmitted: (value) {
-                  onSendMessage(textEditingController.text, 0);
-                },
-                style: TextStyle(color: Colors.black, fontSize: 15.0),
-                controller: textEditingController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                child: TextField(
+                  onSubmitted: (value) {
+                    onSendMessage(textEditingController.text, 0);
+                  },
+                  style: TextStyle(color: Colors.black, fontSize: 15.0),
+                  controller: textEditingController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Type your message...',
+                  ),
+                  focusNode: focusNode,
                 ),
-                focusNode: focusNode,
               ),
             ),
           ),
@@ -97,7 +100,7 @@ class _MessagingViewState extends State<MessagingView> {
       width: double.infinity,
       height: 40.0,
       decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.red, width: 0.5)),
+          border: Border(top: BorderSide(color: Colors.red[800], width: 0.5)),
           color: Colors.white),
     );
   }
@@ -196,12 +199,13 @@ class _MessagingViewState extends State<MessagingView> {
           Container(
             child: Text(
               document.data()['content'],
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Colors.black),
             ),
             padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
             width: 200.0,
             decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(8.0)),
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(8.0)),
             margin: EdgeInsets.only(
                 bottom: isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),
           )
@@ -235,7 +239,7 @@ class _MessagingViewState extends State<MessagingView> {
                   padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                   width: 200.0,
                   decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.red[800],
                       borderRadius: BorderRadius.circular(8.0)),
                   margin: EdgeInsets.only(left: 10.0),
                 )
@@ -306,7 +310,7 @@ class _MessagingViewState extends State<MessagingView> {
                   return Center(
                       child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.red)));
+                              AlwaysStoppedAnimation<Color>(Colors.red[800])));
                 } else {
                   listMessage.addAll(snapshot.data.docs);
                   return ListView.builder(
@@ -332,7 +336,7 @@ class Loading extends StatelessWidget {
     return Container(
       child: Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.red[800]),
         ),
       ),
       color: Colors.white.withOpacity(0.8),

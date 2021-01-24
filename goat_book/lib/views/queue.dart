@@ -49,20 +49,19 @@ class _QueueViewState extends State<QueueView> {
             for (String roomname in data['subbedTo']) {
               tiles.add(new GroupQueueTile(roomname));
             }
-            if(tiles.length == 0){
+            if (tiles.length == 0) {
               return Card(
-                child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Flex(direction: Axis.horizontal, children: <Widget>[
-                      Text("Not Currently Subscribed to Any Activities"),
-                      Spacer(),
-                      
-                    ])));
-            }
-            else{
+                  child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child:
+                          Flex(direction: Axis.horizontal, children: <Widget>[
+                        Text("Not Currently Subscribed to Any Activities"),
+                        Spacer(),
+                      ])));
+            } else {
               return ListView(
-              children: tiles,
-            );
+                children: tiles,
+              );
             }
           },
         ));
@@ -93,7 +92,8 @@ class GroupQueueTile extends StatelessWidget {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading..", style: TextStyle(color: Colors.red[800]));
+                return Text("Loading..",
+                    style: TextStyle(color: Colors.red[800]));
               }
 
               Map<String, dynamic> data = snapshot.data.data();
@@ -125,6 +125,19 @@ class GroupQueueTile extends StatelessWidget {
 
               int numQueued = data['queued'].length;
               queueText = "$numQueued Currently in queue";
+
+              if (numQueued >= data['minUserCount']) {
+                var documentReference = FirebaseFirestore.instance
+                    .collection('rooms')
+                    .doc(roomname)
+                    .collection('chatlog');
+
+                documentReference.add({
+                  'idFrom': 'SERVER',
+                  'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
+                  'content': 'You have enough people!!!!'
+                }).then((value) => null);
+              }
 
               return ExpansionTile(
                 title: Text(roomname, style: TextStyle(color: Colors.black)),
