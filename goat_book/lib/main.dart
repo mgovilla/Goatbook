@@ -74,12 +74,14 @@ class AuthManager extends StatelessWidget {
               title: 'Goatbook',
               theme: theme,
               home: NavigationWrapper(),
+              debugShowCheckedModeBanner: false,
             );
           } else {
             return MaterialApp(
               title: 'Goatbook',
               theme: theme,
               home: LoginView(),
+              debugShowCheckedModeBanner: false,
             );
           }
         });
