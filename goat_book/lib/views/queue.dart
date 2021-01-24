@@ -49,10 +49,14 @@ class _QueueViewState extends State<QueueView> {
             for (String roomname in data['subbedTo']) {
               tiles.add(new GroupQueueTile(roomname));
             }
-
-            return ListView(
+            if(tiles.length == 0){
+              return Text("Currently Not Subscribed");
+            }
+            else{
+              return ListView(
               children: tiles,
             );
+            }
           },
         ));
   }
