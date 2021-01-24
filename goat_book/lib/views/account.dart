@@ -22,16 +22,45 @@ class _AccountViewState extends State<AccountView> {
     _authService = new AuthService();
   }
 
+  String _constructDisplayName() {
+    return FirebaseAuth.instance.currentUser.displayName != null
+        ? FirebaseAuth.instance.currentUser.displayName
+        : "";
+  }
+
+  Widget _buildPopup(BuildContext context) {
+    String val;
+
+    return new AlertDialog(
+      content: TextField(
+          autocorrect: false,
+          onChanged: (value) {
+            val = value;
+          }),
+      actions: [
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            FirebaseAuth.instance.currentUser.updateProfile(displayName: val);
+          },
+          child: Text("OK"),
+        )
+      ],
+    );
+  }
+
+  Widget _changeDisplayName(BuildContext ctx) {
+    showDialog(
+        context: ctx, builder: (BuildContext context) => _buildPopup(ctx));
+  }
+
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red[800],
-          title: const Text('Account Information'),
-          actions: <Widget>[
-            EnableMessaging()
-          ]
-        ),
+            backgroundColor: Colors.red[800],
+            title: const Text('Account Information'),
+            actions: <Widget>[EnableMessaging()]),
         body: Column(children: <Widget>[
           Card(
               child: Padding(
@@ -49,10 +78,10 @@ class _AccountViewState extends State<AccountView> {
               child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Flex(direction: Axis.horizontal, children: <Widget>[
-                    Text("Username: "),
+                    Text("Username: " + _constructDisplayName()),
                     Spacer(),
                     MaterialButton(
-                      // onPressed: ,
+                      onPressed: () => _changeDisplayName(context),
                       child: Text("Change Username",
                           style: TextStyle(color: Colors.red[800])),
                     )
@@ -70,7 +99,6 @@ class _AccountViewState extends State<AccountView> {
                     )
                   ]))),
           SignoutButton(),
-        
         ]));
   }
 }
@@ -100,6 +128,7 @@ class EnableMessaging extends StatelessWidget {
   Widget build(BuildContext ctx) {
     return MaterialButton(
         onPressed: () => _enableMessaging(),
-        child: Text("Enable Notifications", style: TextStyle(color: Colors.white)));
+        child: Text("Enable Notifications",
+            style: TextStyle(color: Colors.white)));
   }
 }
