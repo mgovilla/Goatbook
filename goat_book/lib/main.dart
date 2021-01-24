@@ -14,7 +14,7 @@ import './views/loading.dart';
 import 'core/auth.dart';
 
 // This is the color theme for the whole app
-ThemeData theme = ThemeData(primarySwatch: Colors.red[800]);
+ThemeData theme = ThemeData(primarySwatch: Colors.red);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
