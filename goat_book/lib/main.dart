@@ -1,4 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,8 +13,6 @@ import './views/loading.dart';
 
 import 'core/auth.dart';
 
-BaseAuth _authService;
-
 // This is the color theme for the whole app
 ThemeData theme = ThemeData(primarySwatch: Colors.red[800]);
 
@@ -23,6 +22,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  void _foregroundMessageHandler(RemoteMessage message) {}
+  Future<void> _backgroundMessageHandler(RemoteMessage message) {}
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -36,12 +38,27 @@ class MyApp extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             // After firebase init is done.
-            _authService = AuthService();
+            () async => {
+                  await FirebaseMessaging.instance.requestPermission(
+                      alert: true,
+                      announcement: false,
+                      badge: true,
+                      carPlay: false,
+                      criticalAlert: false,
+                      provisional: false,
+                      sound: true)
+                };
+
+            FirebaseMessaging.onMessage
+                .listen((m) => _foregroundMessageHandler(m));
+
+            FirebaseMessaging.onBackgroundMessage(
+                (m) => _backgroundMessageHandler(m));
 
             return AuthManager();
           }
 
-          return LoadingView();
+          return LoadingView(); // fix this
         });
   }
 }
@@ -52,7 +69,7 @@ class AuthManager extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (_authService.getCurrentUser() != null) {
+          if (FirebaseAuth.instance.currentUser != null) {
             return MaterialApp(
               title: 'Goatbook',
               theme: theme,
@@ -114,14 +131,12 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
           BottomNavigationBarItem(
             backgroundColor: Color(0xFFC62828),
             icon: Icon(Icons.group),
-            
             label: 'Groups',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.run_circle),
             backgroundColor: Color(0xFFC62828),
             label: 'Queue',
-          
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
@@ -129,7 +144,6 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.white,
         backgroundColor: Colors.red[800],
-        
         onTap: _onItemTapped,
       ),
     );
