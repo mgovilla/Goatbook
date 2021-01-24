@@ -77,67 +77,65 @@ class GroupQueueTile extends StatelessWidget {
     DocumentReference currentlyQueued =
         FirebaseFirestore.instance.collection('rooms').doc(roomname);
 
-    return 
-    Card( 
-      
+    return Card(
         child: StreamBuilder(
-        stream: currentlyQueued.snapshots(),
-        builder: (ctx, snapshot) {
-          if (snapshot.hasError) {
-            return Text("Something went wrong.");
-          }
+            stream: currentlyQueued.snapshots(),
+            builder: (ctx, snapshot) {
+              if (snapshot.hasError) {
+                return Text("Something went wrong.");
+              }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading..");
-          }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Text("Loading..");
+              }
 
-          Map<String, dynamic> data = snapshot.data.data();
-          // Change the button based on if we are already in the queue
-          if (data['queued'].contains(FirebaseAuth.instance.currentUser.uid)) {
-            queueBtn = MaterialButton(
-              onPressed: () {
-                currentlyQueued.update({
-                  'queued': FieldValue.arrayRemove(
-                      [FirebaseAuth.instance.currentUser.uid])
-                }).then((result) {});
-              },
-              child:
-                  Text("Leave Queue", style: TextStyle(color: Colors.white)),
-            );
-          } else {
-            queueBtn = MaterialButton(
-              onPressed: () {
-                currentlyQueued.update({
-                  'queued': FieldValue.arrayUnion(
-                      [FirebaseAuth.instance.currentUser.uid])
-                }).then((result) {});
-              },
-              child:
-                  Text("Join Queue", style: TextStyle(color: Colors.white)),
-            );
-          }
+              Map<String, dynamic> data = snapshot.data.data();
+              // Change the button based on if we are already in the queue
+              if (data['queued']
+                  .contains(FirebaseAuth.instance.currentUser.uid)) {
+                queueBtn = MaterialButton(
+                  onPressed: () {
+                    currentlyQueued.update({
+                      'queued': FieldValue.arrayRemove(
+                          [FirebaseAuth.instance.currentUser.uid])
+                    }).then((result) {});
+                  },
+                  child: Text("Leave Queue",
+                      style: TextStyle(color: Colors.white)),
+                );
+              } else {
+                queueBtn = MaterialButton(
+                  onPressed: () {
+                    currentlyQueued.update({
+                      'queued': FieldValue.arrayUnion(
+                          [FirebaseAuth.instance.currentUser.uid])
+                    }).then((result) {});
+                  },
+                  child:
+                      Text("Join Queue", style: TextStyle(color: Colors.white)),
+                );
+              }
 
-          int numQueued = data['queued'].length;
-          queueText = "$numQueued People Currently Queued";
+              int numQueued = data['queued'].length;
+              queueText = "$numQueued Currently in queue";
 
-          return ExpansionTile(
-            
-            title: Text(roomname, style: TextStyle(color: Colors.black)),
-            children: [
-              Container(
-                color: Colors.red[800],
-              child: Row(
+              return ExpansionTile(
+                title: Text(roomname, style: TextStyle(color: Colors.black)),
                 children: [
-                  Padding(
-                      child: Text(queueText,
-                          style: TextStyle(color: Colors.white)),
-                      padding: EdgeInsets.symmetric(horizontal: 15.0)),
-                  queueBtn,
+                  Container(
+                      color: Colors.red[800],
+                      child: Row(
+                        children: [
+                          Padding(
+                              child: Text(queueText,
+                                  style: TextStyle(color: Colors.white)),
+                              padding: EdgeInsets.symmetric(horizontal: 15.0)),
+                          queueBtn,
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ))
                 ],
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              ))
-            ],
-          );
-        }));
+              );
+            }));
   }
 }

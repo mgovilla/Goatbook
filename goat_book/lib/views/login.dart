@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+final GoogleSignIn googleSignIn = GoogleSignIn();
 
 class LoginView extends StatefulWidget {
   const LoginView();
@@ -26,12 +29,40 @@ class _LoginButtonState extends State<LoginButton> {
   final uid = TextEditingController();
   final pass = TextEditingController();
 
+  Future<String> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential authResult =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    final User user = authResult.user;
+
+    if (user != null) {
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final User currentUser = FirebaseAuth.instance.currentUser;
+      assert(user.uid == currentUser.uid);
+
+      print('signInWithGoogle succeeded: $user');
+
+      return '$user';
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext ctx) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red[800],
-         
         ),
         body: Form(
             key: _formKey,
@@ -115,6 +146,16 @@ class _LoginButtonState extends State<LoginButton> {
                                   print(e.code);
                                 }
                               }
+                            }),
+                        MaterialButton(
+                            child: Text("Sign In With Google",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0)),
+                            color: Colors.white,
+                            textColor: Colors.red[800],
+                            onPressed: () {
+                              signInWithGoogle().then((String s) {});
                             }),
                       ])
                     ])))));
