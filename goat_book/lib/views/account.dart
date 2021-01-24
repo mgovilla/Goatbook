@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goat_book/core/auth.dart';
@@ -63,7 +66,8 @@ class _AccountViewState extends State<AccountView> {
                           style: TextStyle(color: Colors.red[800])),
                     )
                   ]))),
-          SignoutButton()
+          SignoutButton(),
+          EnableMessaging()
         ]));
   }
 }
@@ -77,5 +81,22 @@ class SignoutButton extends StatelessWidget {
       textColor: Colors.white,
       color: Colors.red[800],
     );
+  }
+}
+
+class EnableMessaging extends StatelessWidget {
+  void _enableMessaging() {
+    FirebaseMessaging.instance.getToken().then((value) => FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .update({"fcmToken": value}));
+  }
+
+  @override
+  Widget build(BuildContext ctx) {
+    return MaterialButton(
+        onPressed: () => _enableMessaging(),
+        child: Text("Enable Notifications"));
   }
 }
