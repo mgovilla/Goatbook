@@ -21,41 +21,56 @@ class QueueView extends StatefulWidget {
 class _QueueViewState extends State<QueueView> {
   @override
   Widget build(BuildContext ctx) {
-    return (ListView(
-      children: <Widget>[
-        Container(
-            height: 500,
-            child: Flex(
-              children: [
-                GetUsers("boardgames"),
-                QueueUser("I am here to play games", "boardgames"),
-                DequeueUser("boardgames")
-              ],
-              direction: Axis.vertical,
-            ))
-      ],
-    ));
+    List<String> subbedTo;
+
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .snapshots(),
+      initialData: [],
+      builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return Text("Something went wrong.");
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading..");
+        }
+
+        Map<String, dynamic> data = snapshot.data.data();
+        List<GroupQueueTile> tiles = [];
+
+        for (String roomname in data['subbedTo']) {
+          tiles.add(new GroupQueueTile(roomname));
+        }
+
+        return ListView(
+          children: tiles,
+        );
+      },
+    );
   }
 }
 
-class GetRooms extends StatelessWidget {
-  @override
-  Widget build(BuildContext ctx) {}
-}
+// This widget is for each tile
+// One for each group that you are subbed to and expands with the list of others
+// currently queued
+class GroupQueueTile extends StatelessWidget {
+  GroupQueueTile(this.roomname);
 
-class GetUsers extends StatelessWidget {
-  const GetUsers(this.room);
-
-  final room;
+  final String roomname;
+  String queueText = "0 queued currently";
+  RaisedButton queueBtn;
 
   @override
   Widget build(BuildContext ctx) {
-    DocumentReference users =
-        FirebaseFirestore.instance.collection("rooms").doc(room);
+    DocumentReference currentlyQueued =
+        FirebaseFirestore.instance.collection('rooms').doc(roomname);
 
-    return StreamBuilder<DocumentSnapshot>(
-        stream: users.snapshots(),
-        builder: (BuildContext ctx, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    return StreamBuilder(
+        stream: currentlyQueued.snapshots(),
+        builder: (ctx, snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong.");
           }
@@ -64,56 +79,47 @@ class GetUsers extends StatelessWidget {
             return Text("Loading..");
           }
 
-          List<Widget> users = [];
           Map<String, dynamic> data = snapshot.data.data();
-          data.forEach((k, v) => {
-                users.add(new ListTile(
-                  title: Text(k),
-                  subtitle: Text(v["status"]),
-                ))
-              });
+          // Change the button based on if we are already in the queue
+          if (data['queued'].contains(FirebaseAuth.instance.currentUser.uid)) {
+            queueBtn = RaisedButton(
+              onPressed: () {
+                currentlyQueued.update({
+                  'queued': FieldValue.arrayRemove(
+                      [FirebaseAuth.instance.currentUser.uid])
+                }).then((result) {});
+              },
+              child: Text("Leave Queue"),
+            );
+          } else {
+            queueBtn = RaisedButton(
+              onPressed: () {
+                currentlyQueued.update({
+                  'queued': FieldValue.arrayUnion(
+                      [FirebaseAuth.instance.currentUser.uid])
+                }).then((result) {});
+              },
+              child: Text("Join Queue"),
+            );
+          }
 
-          return new Expanded(child: ListView(children: users));
+          int numQueued = data['queued'].length;
+          queueText = "$numQueued queued currently";
+
+          return ExpansionTile(
+            title: Text(roomname),
+            children: [
+              Row(
+                children: [
+                  Padding(
+                      child: Text(queueText),
+                      padding: EdgeInsets.symmetric(horizontal: 15.0)),
+                  queueBtn,
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              )
+            ],
+          );
         });
-  }
-}
-
-// TODO: Migrate this to a server side function in order to ensure data correctness.
-class QueueUser extends StatelessWidget {
-  QueueUser(this.status, this.roomname);
-
-  final String status;
-  final String roomname;
-
-  @override
-  Widget build(BuildContext ctx) {
-    DocumentReference room =
-        FirebaseFirestore.instance.collection('rooms').doc(roomname);
-
-    Future<void> queueUser() {
-      return room.update({
-        FirebaseAuth.instance.currentUser.uid: {'status': status}
-      });
-    }
-
-    return TextButton(onPressed: queueUser, child: Text("I'm In!"));
-  }
-}
-
-class DequeueUser extends StatelessWidget {
-  DequeueUser(this.roomname);
-
-  final String roomname;
-
-  @override
-  Widget build(BuildContext ctx) {
-    DocumentReference room =
-        FirebaseFirestore.instance.collection('rooms').doc(roomname);
-    Future<void> dequeueUser() {
-      return room
-          .update({FirebaseAuth.instance.currentUser.uid: FieldValue.delete()});
-    }
-
-    return TextButton(onPressed: dequeueUser, child: Text("I'm Out!"));
   }
 }

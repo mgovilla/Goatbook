@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +19,19 @@ class _GroupsViewState extends State<GroupsView> {
 }
 
 class GroupsList extends StatelessWidget {
+  // Function to subscribe a user to the room which writes to the users and rooms collections
   Future<void> _subscribeHandler(String id) async {
-    FirebaseFunctions.instance
-        .useFunctionsEmulator(origin: "http://localhost:5001");
-    FirebaseFunctions.instance.httpsCallable("subscribeUser")();
+    await FirebaseFirestore.instance.collection("rooms").doc(id).update({
+      'users':
+          FieldValue.arrayUnion(<String>[FirebaseAuth.instance.currentUser.uid])
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .update({
+      'subbedTo': FieldValue.arrayUnion(<String>[id])
+    });
   }
 
   @override
@@ -32,11 +42,12 @@ class GroupsList extends StatelessWidget {
       stream: users.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return Text('Something went wrong',
+              style: TextStyle(color: Colors.red[800]));
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
+          return Text("Loading", style: TextStyle(color: Colors.red[800]));
         }
 
         return new ListView(
@@ -49,7 +60,8 @@ class GroupsList extends StatelessWidget {
                       Spacer(),
                       MaterialButton(
                         onPressed: () => _subscribeHandler(document.id),
-                        child: Text("Subscribe"),
+                        child: Text("Subscribe",
+                            style: TextStyle(color: Colors.red[800])),
                         textColor: Theme.of(ctx).primaryColor,
                       )
                     ])));

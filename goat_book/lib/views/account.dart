@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goat_book/core/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 AuthService _authService;
 
@@ -36,6 +37,19 @@ class _AccountViewState extends State<AccountView> {
                     Text("Email: " + _authService.getCurrentUser().email),
                     Spacer(),
                     MaterialButton(
+                      // onPressed: ,
+                      child: Text("Change Email",
+                          style: TextStyle(color: Colors.red[800])),
+                    )
+                  ]))),
+          Card(
+              child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Flex(direction: Axis.horizontal, children: <Widget>[
+                    Text("Username: "),
+                    Spacer(),
+                    MaterialButton(
+                      // onPressed: ,
                       child: Text("Change Username",
                           style: TextStyle(color: Colors.red[800])),
                     )
@@ -44,10 +58,11 @@ class _AccountViewState extends State<AccountView> {
               child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Flex(direction: Axis.horizontal, children: <Widget>[
-                    Text("Username: USERNAME HERE"),
+                    Text("Password: *********"),
                     Spacer(),
                     MaterialButton(
-                      child: Text("Change Username",
+                      // onPressed: ,
+                      child: Text("Change Password",
                           style: TextStyle(color: Colors.red[800])),
                     )
                   ]))),
