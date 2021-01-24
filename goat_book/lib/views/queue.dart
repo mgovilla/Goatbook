@@ -126,19 +126,6 @@ class GroupQueueTile extends StatelessWidget {
               int numQueued = data['queued'].length;
               queueText = "$numQueued Currently in queue";
 
-              if (numQueued >= data['minUserCount']) {
-                var documentReference = FirebaseFirestore.instance
-                    .collection('rooms')
-                    .doc(roomname)
-                    .collection('chatlog');
-
-                documentReference.add({
-                  'idFrom': 'SERVER',
-                  'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
-                  'content': 'You have enough people!!!!'
-                }).then((value) => null);
-              }
-
               return ExpansionTile(
                 title: Text(roomname, style: TextStyle(color: Colors.black)),
                 children: [
