@@ -102,7 +102,7 @@ class _MessagingViewState extends State<MessagingView> {
         ),
       body: Column(children: <Widget>[
         UsernameSection(), // need to put all this together
-        SearchSection(), // need to put all this together
+       // SearchSection(), // need to put all this together
         MessageSection(), // still needs to work on this
       ],
     ));
