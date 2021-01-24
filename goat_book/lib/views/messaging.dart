@@ -139,12 +139,77 @@ class UsernameSection extends StatelessWidget {
   }
 }
 
-class SearchSection extends StatelessWidget {
+class DataSearch extends StatelessMaterial {
+  final List<String> listWords;
+
+  DataSearch(this.listWords);
+
+  get transitionAnimation => null;
+
   @override
-  Widget build(BuildContext ctx) {
-    return (Text("Search Section"));
+  List<Widget> buildAction(BuildContext context) {
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            String query = '';
+          })
+    ];
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   //leading icon on the left of the app bar
+  //   return IconButton(
+  //       icon: AnimatedIcon(
+  //         icon: AnimatedIcons.menu_arrow,
+  //         progress: transitionAnimation,
+  //       ),
+  //       onPressed: () {
+  //         //closed(context, null);
+  //       });
+  // }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // show some result based on the selection
+    String query = '';
+    return Center(
+      child: Text(query),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // show when someone searches for something
+    String query = '';
+    final suggestionList = query.isEmpty
+        ? listWords
+        : listWords.where((p) => p.startsWith(query)).toList();
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          buildResults(context);
+        },
+        trailing: Icon(Icons.remove_red_eye),
+        title: RichText(
+          text: TextSpan(
+              text: suggestionList[index].substring(0, query.length),
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                    text: suggestionList[index].substring(query.length),
+                    style: TextStyle(color: Colors.grey))
+              ]),
+        ),
+      ),
+      itemCount: suggestionList.length,
+    );
   }
 }
+
+class StatelessMaterial {}
 
 class MessageSection extends StatelessWidget {
   @override
