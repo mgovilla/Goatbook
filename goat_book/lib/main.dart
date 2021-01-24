@@ -114,14 +114,12 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
           BottomNavigationBarItem(
             backgroundColor: Color(0xFFC62828),
             icon: Icon(Icons.group),
-            
             label: 'Groups',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.run_circle),
             backgroundColor: Color(0xFFC62828),
             label: 'Queue',
-          
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
@@ -129,7 +127,6 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.white,
         backgroundColor: Colors.red[800],
-        
         onTap: _onItemTapped,
       ),
     );

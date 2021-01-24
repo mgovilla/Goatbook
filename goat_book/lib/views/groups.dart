@@ -22,7 +22,7 @@ class GroupsList extends StatelessWidget {
   // Function to subscribe a user to the room which writes to the users and rooms collections
   Future<void> _subscribeHandler(String id) async {
     await FirebaseFirestore.instance.collection("rooms").doc(id).update({
-      'users':
+      'subbed':
           FieldValue.arrayUnion(<String>[FirebaseAuth.instance.currentUser.uid])
     });
 
@@ -31,6 +31,25 @@ class GroupsList extends StatelessWidget {
         .doc(FirebaseAuth.instance.currentUser.uid)
         .update({
       'subbedTo': FieldValue.arrayUnion(<String>[id])
+    });
+  }
+
+  Future<void> _unsubscribeHandler(String id) async {
+    await FirebaseFirestore.instance.collection("rooms").doc(id).update({
+      'subbed': FieldValue.arrayRemove(
+          <String>[FirebaseAuth.instance.currentUser.uid])
+    });
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .update({
+      'subbedTo': FieldValue.arrayRemove(<String>[id])
+    });
+
+    await FirebaseFirestore.instance.collection('rooms').doc(id).update({
+      'queued': FieldValue.arrayRemove(
+          <String>[FirebaseAuth.instance.currentUser.uid])
     });
   }
 
@@ -49,21 +68,35 @@ class GroupsList extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Text("Loading", style: TextStyle(color: Colors.red[800]));
         }
+        MaterialButton subBtn;
 
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
+            if (!document
+                .data()['subbed']
+                .contains(FirebaseAuth.instance.currentUser.uid)) {
+              subBtn = MaterialButton(
+                onPressed: () => _subscribeHandler(document.id),
+                child:
+                    Text("Subscribe", style: TextStyle(color: Colors.red[800])),
+                textColor: Theme.of(ctx).primaryColor,
+              );
+            } else {
+              subBtn = MaterialButton(
+                onPressed: () => _unsubscribeHandler(document.id),
+                child: Text("Unsubscribe",
+                    style: TextStyle(color: Colors.red[800])),
+                textColor: Theme.of(ctx).primaryColor,
+              );
+            }
+
             return Card(
                 child: Padding(
                     padding: EdgeInsets.all(10),
                     child: Flex(direction: Axis.horizontal, children: <Widget>[
                       Text(document.id),
                       Spacer(),
-                      MaterialButton(
-                        onPressed: () => _subscribeHandler(document.id),
-                        child: Text("Subscribe",
-                            style: TextStyle(color: Colors.red[800])),
-                        textColor: Theme.of(ctx).primaryColor,
-                      )
+                      subBtn
                     ])));
           }).toList(),
         );
