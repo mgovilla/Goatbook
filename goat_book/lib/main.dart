@@ -1,8 +1,8 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import './views/account.dart';
 import './views/groups.dart';
@@ -23,6 +23,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   void _foregroundMessageHandler(RemoteMessage message) {}
+
   Future<void> _backgroundMessageHandler(RemoteMessage message) {}
 
   @override
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
                 };
 
             FirebaseMessaging.onMessage
-                .listen((m) => _foregroundMessageHandler(m));
+                .listen((event) => _foregroundMessageHandler(event));
 
             FirebaseMessaging.onBackgroundMessage(
                 (m) => _backgroundMessageHandler(m));
@@ -101,9 +102,9 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _bottomNavOptions = <Widget>[
     // Add each page here!!!!
-    MessagingView(),
     GroupsView(),
     QueueView(),
+    MessagingView(),
     AccountView()
   ];
 
@@ -126,11 +127,6 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            backgroundColor: Color(0xFFC62828),
-            label: 'Messaging',
-          ),
-          BottomNavigationBarItem(
             backgroundColor: Color(0xFFC62828),
             icon: Icon(Icons.group),
             label: 'Groups',
@@ -139,6 +135,11 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
             icon: Icon(Icons.run_circle),
             backgroundColor: Color(0xFFC62828),
             label: 'Queue',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            backgroundColor: Color(0xFFC62828),
+            label: 'Messaging',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
