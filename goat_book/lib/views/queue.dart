@@ -23,33 +23,38 @@ class _QueueViewState extends State<QueueView> {
   Widget build(BuildContext ctx) {
     List<String> subbedTo;
 
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser.uid)
-          .snapshots(),
-      initialData: [],
-      builder: (BuildContext ctx, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong.");
-        }
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red[800],
+          title: const Text('Queue For Activities'),
+        ),
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser.uid)
+              .snapshots(),
+          initialData: [],
+          builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text("Something went wrong.");
+            }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading..");
-        }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading..");
+            }
 
-        Map<String, dynamic> data = snapshot.data.data();
-        List<GroupQueueTile> tiles = [];
+            Map<String, dynamic> data = snapshot.data.data();
+            List<GroupQueueTile> tiles = [];
 
-        for (String roomname in data['subbedTo']) {
-          tiles.add(new GroupQueueTile(roomname));
-        }
+            for (String roomname in data['subbedTo']) {
+              tiles.add(new GroupQueueTile(roomname));
+            }
 
-        return ListView(
-          children: tiles,
-        );
-      },
-    );
+            return ListView(
+              children: tiles,
+            );
+          },
+        ));
   }
 }
 
@@ -61,14 +66,17 @@ class GroupQueueTile extends StatelessWidget {
 
   final String roomname;
   String queueText = "0 queued currently";
-  RaisedButton queueBtn;
+  MaterialButton queueBtn;
 
   @override
   Widget build(BuildContext ctx) {
     DocumentReference currentlyQueued =
         FirebaseFirestore.instance.collection('rooms').doc(roomname);
 
-    return StreamBuilder(
+    return 
+    Card( 
+      
+        child: StreamBuilder(
         stream: currentlyQueued.snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
@@ -82,44 +90,50 @@ class GroupQueueTile extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data.data();
           // Change the button based on if we are already in the queue
           if (data['queued'].contains(FirebaseAuth.instance.currentUser.uid)) {
-            queueBtn = RaisedButton(
+            queueBtn = MaterialButton(
               onPressed: () {
                 currentlyQueued.update({
                   'queued': FieldValue.arrayRemove(
                       [FirebaseAuth.instance.currentUser.uid])
                 }).then((result) {});
               },
-              child: Text("Leave Queue"),
+              child:
+                  Text("Leave Queue", style: TextStyle(color: Colors.white)),
             );
           } else {
-            queueBtn = RaisedButton(
+            queueBtn = MaterialButton(
               onPressed: () {
                 currentlyQueued.update({
                   'queued': FieldValue.arrayUnion(
                       [FirebaseAuth.instance.currentUser.uid])
                 }).then((result) {});
               },
-              child: Text("Join Queue"),
+              child:
+                  Text("Join Queue", style: TextStyle(color: Colors.white)),
             );
           }
 
           int numQueued = data['queued'].length;
-          queueText = "$numQueued queued currently";
+          queueText = "$numQueued People Currently Queued";
 
           return ExpansionTile(
-            title: Text(roomname),
+            
+            title: Text(roomname, style: TextStyle(color: Colors.red[800])),
             children: [
-              Row(
+              Container(
+                color: Colors.red[800],
+              child: Row(
                 children: [
                   Padding(
-                      child: Text(queueText),
+                      child: Text(queueText,
+                          style: TextStyle(color: Colors.white)),
                       padding: EdgeInsets.symmetric(horizontal: 15.0)),
                   queueBtn,
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              )
+              ))
             ],
           );
-        });
+        }));
   }
 }

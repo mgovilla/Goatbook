@@ -57,7 +57,13 @@ class GroupsList extends StatelessWidget {
   Widget build(BuildContext ctx) {
     CollectionReference users = FirebaseFirestore.instance.collection("rooms");
 
-    return StreamBuilder<QuerySnapshot>(
+    return 
+    Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red[800],
+          title: const Text('Join A Group'),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
       stream: users.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -101,6 +107,6 @@ class GroupsList extends StatelessWidget {
           }).toList(),
         );
       },
-    );
+    ));
   }
 }
