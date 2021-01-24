@@ -100,6 +100,7 @@ class _MessagingViewState extends State<MessagingView> {
           backgroundColor: Colors.red[800],
           title: const Text('The Goat Hub'),
         ),
+
         body: Column(
           children: <Widget>[
             UsernameSection(), // need to put all this together

@@ -49,10 +49,21 @@ class _QueueViewState extends State<QueueView> {
             for (String roomname in data['subbedTo']) {
               tiles.add(new GroupQueueTile(roomname));
             }
-
-            return ListView(
+            if(tiles.length == 0){
+              return Card(
+                child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Flex(direction: Axis.horizontal, children: <Widget>[
+                      Text("Not Currently Subscribed to Any Activities"),
+                      Spacer(),
+                      
+                    ])));
+            }
+            else{
+              return ListView(
               children: tiles,
             );
+            }
           },
         ));
   }
@@ -82,7 +93,7 @@ class GroupQueueTile extends StatelessWidget {
               }
 
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading..");
+                return Text("Loading..", style: TextStyle(color: Colors.red[800]));
               }
 
               Map<String, dynamic> data = snapshot.data.data();
