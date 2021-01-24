@@ -28,6 +28,9 @@ class _AccountViewState extends State<AccountView> {
         appBar: AppBar(
           backgroundColor: Colors.red[800],
           title: const Text('Account Information'),
+          actions: <Widget>[
+            EnableMessaging()
+          ]
         ),
         body: Column(children: <Widget>[
           Card(
@@ -67,7 +70,7 @@ class _AccountViewState extends State<AccountView> {
                     )
                   ]))),
           SignoutButton(),
-          EnableMessaging()
+        
         ]));
   }
 }
@@ -97,6 +100,6 @@ class EnableMessaging extends StatelessWidget {
   Widget build(BuildContext ctx) {
     return MaterialButton(
         onPressed: () => _enableMessaging(),
-        child: Text("Enable Notifications"));
+        child: Text("Enable Notifications", style: TextStyle(color: Colors.white)));
   }
 }

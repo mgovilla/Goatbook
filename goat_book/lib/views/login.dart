@@ -120,42 +120,51 @@ class _LoginButtonState extends State<LoginButton> {
                             },
                           ),
                           Column(children: <Widget>[
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 0),
+                                      child: MaterialButton(
+                                          child: Text("Sign In",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0)),
+                                          color: Colors.red[800],
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            if (_formKey.currentState
+                                                .validate()) {
+                                              FirebaseAuth.instance
+                                                  .signInWithEmailAndPassword(
+                                                      email: uid.text,
+                                                      password: pass.text);
+                                            }
+                                          })),
+                                  MaterialButton(
+                                      child: Text("Sign Up",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0)),
+                                      color: Colors.red[800],
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        if (_formKey.currentState.validate()) {
+                                          try {
+                                            FirebaseAuth.instance
+                                                .createUserWithEmailAndPassword(
+                                                    email: uid.text,
+                                                    password: pass.text);
+                                          } on FirebaseAuthException catch (e) {
+                                            print(e.code);
+                                          }
+                                        }
+                                      }),
+                                ]),
                             MaterialButton(
-                                child: Text("Sign In",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0)),
-                                color: Colors.red[800],
-                                textColor: Colors.white,
-                                onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    FirebaseAuth.instance
-                                        .signInWithEmailAndPassword(
-                                            email: uid.text,
-                                            password: pass.text);
-                                  }
-                                }),
-                            MaterialButton(
-                                child: Text("Sign Up",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0)),
-                                color: Colors.white,
-                                textColor: Colors.red[800],
-                                onPressed: () {
-                                  if (_formKey.currentState.validate()) {
-                                    try {
-                                      FirebaseAuth.instance
-                                          .createUserWithEmailAndPassword(
-                                              email: uid.text,
-                                              password: pass.text);
-                                    } on FirebaseAuthException catch (e) {
-                                      print(e.code);
-                                    }
-                                  }
-                                }),
-                            MaterialButton(
-                                child: Text("Sign In With Google",
+                                child: Text("Google Login",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0)),
