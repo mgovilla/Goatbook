@@ -15,7 +15,7 @@ import 'core/auth.dart';
 BaseAuth _authService;
 
 // This is the color theme for the whole app
-ThemeData theme = ThemeData(primarySwatch: Colors.blue);
+ThemeData theme = ThemeData(primarySwatch: Colors.red[800]);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -108,21 +108,28 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
+            backgroundColor: Color(0xFFC62828),
             label: 'Messaging',
           ),
           BottomNavigationBarItem(
+            backgroundColor: Color(0xFFC62828),
             icon: Icon(Icons.group),
+            
             label: 'Groups',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.run_circle),
+            backgroundColor: Color(0xFFC62828),
             label: 'Queue',
+          
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account')
         ],
         currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Theme.of(ctx).colorScheme.primary,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        backgroundColor: Colors.red[800],
+        
         onTap: _onItemTapped,
       ),
     );
