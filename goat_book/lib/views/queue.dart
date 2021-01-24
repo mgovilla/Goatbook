@@ -118,7 +118,7 @@ class GroupQueueTile extends StatelessWidget {
 
           return ExpansionTile(
             
-            title: Text(roomname, style: TextStyle(color: Colors.red[800])),
+            title: Text(roomname, style: TextStyle(color: Colors.black)),
             children: [
               Container(
                 color: Colors.red[800],
