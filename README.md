@@ -21,7 +21,6 @@ Our app works by having users select groups that they are interested in and subs
 | | |
 |:------------------------------------: | :----------------------------------------------:|
 |![Join Group](/img/JoinGroup.jpg) | ![Join Queue Screen](/img/JoinQueue.jpg)|
-|:------------------------------------: | :----------------------------------------------:|
 |![Texting Feature](/img/Texting.jpg) | ![Notification](/img/Notification.jpg)|
 
 ## Challenges we ran into
