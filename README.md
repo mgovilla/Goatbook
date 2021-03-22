@@ -1,8 +1,8 @@
 # Goatbook
 
-this was a project for a 36 hour hackathon @ wpi. code is very messy, but hey, it works.
+This was a project for a 36 hour hackathon @ wpi. code is very messy, but hey, it works.
 
-it is a queue-grouping app writted in flutter with a backend of javascript using firebases's api for user authentication and database storage and authentication.
+It is a queue-grouping app writted in flutter with a backend of javascript using firebases's api for user authentication and database storage and authentication.
 
 ## Inspiration
 
@@ -15,6 +15,14 @@ Goatbook allows users to dynamically subscribe to groups of their interests and 
 ## How we built it
 
 Goatbook is built using the Flutter framework for all frontend development, and uses Firebase for all backend functionality. This means that all user and messaging data for Goatbook is stored remotely and securely on Google's servers. The languages used were Dart (Frontend), as well as Javascript (Backend).
+
+Our app works by having users select groups that they are interested in and subscribing to them. When they want to interact with the groups (ie play some games or start a study session), they can join the queue and notify everyone who is subscribed to the group. After this, they can message each other to share contact information or game codes!
+
+| | |
+|:------------------------------------: | :----------------------------------------------:|
+|![Join Group](/img/JoinGroup.jpg) | ![Join Queue Screen](/img/JoinQueue.jpg)|
+|:------------------------------------: | :----------------------------------------------:|
+|![Texting Feature](/img/Texting.jpg) | ![Notification](/img/Notification.jpg)|
 
 ## Challenges we ran into
 
